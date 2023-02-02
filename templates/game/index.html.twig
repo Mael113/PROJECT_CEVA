@@ -1,0 +1,43 @@
+
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            function updateCounter() {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('app_game_update',{'id': player.id}) }}',
+                    data: {
+                        duration: '{{ config[0].value }}'
+                    },
+                    success: function(data) {
+                        if (data.stopped) {
+                            window.location.replace("{{ path('app_game_stop',{'id': player.id}) }}");
+                            return;
+                        }
+                        $('#counter-value').text(data.value);
+                        $('#counter-time').text(data.time);
+                        updateCounter();
+                    }
+                });
+            }
+            updateCounter();
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-6 text-center">
+                <h1 class="display-1" id="counter-value">{{ counter_value }}</h1>
+            </div>
+            <div class="col-6 text-center">
+                <h1 class="display-1" id="counter-time">{{ config[0].value }}</h1>
+            </div>
+        </div>
+    </div>
+{% endblock %}
