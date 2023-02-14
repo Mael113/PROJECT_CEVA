@@ -3,41 +3,86 @@
 {% block title %}Player index{% endblock %}
 
 {% block body %}
-    <h1>Player index</h1>
+    <div class="main">
+        <div class="container-fluid">
+            <h1 class="mt-5">Player index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Starttime</th>
-                <th>Score</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for player in players %}
-            <tr>
-                <td>{{ player.id }}</td>
-                <td>{{ player.username }}</td>
-                <td>{{ player.name }}</td>
-                <td>{{ player.surname }}</td>
-                <td>{{ player.starttime ? player.starttime|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ player.score }}</td>
-                <td>
-                    <a href="{{ path('app_player_show', {'id': player.id}) }}">show</a>
-                    <a href="{{ path('app_player_edit', {'id': player.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <table
+                    data-toggle="table"
+                    id="table"
+                    data-toolbar="#toolbar"
+                    data-locale="fr-FR"
+                    data-search="true"
+                    data-advanced-search="true"
+                    data-id-table="advancedTable"
+                    data-show-toggle="true"
+                    data-show-fullscreen="true"
+                    data-show-columns="true"
+                    data-show-columns-toggle-all="true"
+                    data-show-export="true"
+                    data-show-multi-sort="true"
+                    data-sort-class="bandwidth_mb"
+                    data-minimum-count-columns="2"
+                    data-show-pagination-switch="true"
+                    data-pagination="true"
+                    data-page-list="[10, 25, 50, 100, all]"
+                    data-show-footer="true"
+                    data-response-handler="responseHandler"
+                    class="text-center"
+            >
+                <thead>
+                <tr>
+                    <th data-sortable="true">#</th>
+                    <th data-sortable="true">Rank</th>
+                    <th data-sortable="true">Username</th>
+                    <th data-sortable="true">Name</th>
+                    <th data-sortable="true">Surname</th>
+                    <th data-sortable="true">Starttime</th>
+                    <th data-sortable="true">Score</th>
+                    <th data-sortable="true">actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for player in players %}
+                    <tr>
+                        <td>{{ player.id }}</td>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ player.username }}</td>
+                        <td>{{ player.name }}</td>
+                        <td>{{ player.surname }}</td>
+                        <td>{{ player.starttime ? player.starttime|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ player.score }}</td>
+                        <td>
+                            {{ include('player/_delete_form.html.twig') }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
-    <a href="{{ path('app_player_new') }}">Create new</a>
+            <div class="text-center mt-5">
+                <button type="button" class="btn bnt-bleu"><a href="{{ path('app_player_new') }}" class="text-decoration-none text-light">Create new</a></button>
+                <button type="button" class="btn bnt-bleu"><a href="{{ path('app_main') }}" class="text-decoration-none text-light">Back to menu</a></button>
+            </div>
+
+
+            <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+            <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table-locale-all.min.js"></script>
+            <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+            <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+            <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/toolbar/bootstrap-table-toolbar.min.js"></script>
+            <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/multiple-sort/bootstrap-table-multiple-sort.js"></script>
+
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            $('#table').bootstrapTable()
+        })
+    </script>
 {% endblock %}

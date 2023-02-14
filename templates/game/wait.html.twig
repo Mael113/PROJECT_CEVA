@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CEVA GAME{% endblock %}
+
+{% block body %}
+    <div class="game">
+
+        <div class="rank">
+            <h1 class="display-6 textbleu" >Ranking</h1>
+            {% for rankng in playerRankng %}
+                <h1 class="display-6" ><a class="textblack">#{{ loop.index}}</a> <a class="textgray">{{ rankng.username }}</a> <a class="textgrayless">{{ rankng.score }} chicks</a></h1>
+            {% endfor %}
+        </div>
+
+
+        <div class="last">
+            <h1 class="display-6 textbleu" > Last vaccinator</h1>
+            {% if lastPlayer is defined %}<h1 class="display-6" ><a class="textblack">#{{ lastRank}}</a> <a class="textgray">{{ lastPlayer.username }}</a> <a class="textgrayless">{{ lastPlayer.score }} chicks</a></h1>{% endif %}
+        </div>
+
+
+        <div class="total">
+            <h1 class="display-6" >Total: <a class="textbleu">{{ dayScore }}</a></h1>
+        </div>
+
+    </div>
+
+    <script type="application/javascript">
+        $(document).ready(function() {
+            function whaitplayer() {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('app_game_wait') }}',
+                    success: function(data) {
+                        if (data.stopped) {
+                            window.location.replace("{{ path('app_game_start') }}");
+                            return;
+                        }
+                        whaitplayer();
+                    }
+                });
+            }
+            whaitplayer();
+        });
+    </script>
+
+
+
+{% endblock %}

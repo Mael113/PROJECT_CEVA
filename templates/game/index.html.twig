@@ -1,11 +1,83 @@
-
 {% extends 'base.html.twig' %}
 
-{% block javascripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+{% block title %}CEVA GAME{% endblock %}
+
+{% block body %}
+    <div class="game">
+
+        <div class="peusdo">
+            <h1 class="display-6 textbleu" >Name: <a class="textblack">{{ player.name }}</a></h1>
+            <h1 class="display-6 textbleu">Surname: <a class="textblack">{{ player.surname }}</a></h1>
+        </div>
+
+        <div class="rank">
+            <h1 class="display-6 textbleu" >Ranking</h1>
+            {% for rankng in playerRankng %}
+                <h1 class="display-6" ><a class="textblack">#{{ loop.index}}</a> <a class="textgray">{{ rankng.username }}</a> <a class="textgrayless">{{ rankng.score }} chicks</a></h1>
+            {% endfor %}
+        </div>
+
+        <div class="score">
+            <h1 class="display-1" id="counter-value">{{ counter_value }}</h1>
+        </div>
+
+        <div class="time">
+            <canvas id="progressCircle"></canvas>
+        </div>
+
+        <div class="last">
+            <h1 class="display-6 textbleu" > Last vaccinator</h1>
+            {% if lastPlayer is defined %}<h1 class="display-6" ><a class="textblack">#{{ lastRank}}</a> <a class="textgray">{{ lastPlayer.username }}</a> <a class="textgrayless">{{ lastPlayer.score }} chicks</a></h1>{% endif %}
+        </div>
+
+
+        <div class="total">
+            <h1 class="display-6" >Total: <a class="textbleu">{{dayScore + counter_value }}</a></h1>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.1.2/chartjs-plugin-annotation.min.js"></script>
 
     <script>
         $(document).ready(function() {
+            var ctx = document.getElementById('progressCircle').getContext('2d');
+            progressCircle = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [{{ config[0].value }},0], // 50% de progression
+                        backgroundColor: [
+                            '#192441', // couleur de fond pour la progression
+                            '#FFFFFF'
+                            //[ { fillColor: 'rgba(255,0,0,0.6)' }, { fillColor: 'rgba(0,102,255,0.6)' } ] // couleur de fond pour le reste
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutout: 95, // pourcentage de la surface du cercle à couper
+                    rotation: -Math.PI, // angle de départ
+                    responsive: false, // ajustement automatique à la taille de l'écran
+                    maintainAspectRatio: true // maintien des proportions
+                    /*annotation: {
+                        annotations: [{
+                            type: 'line',
+                            mode: 'horizontal',
+                            scaleID: 'y-axis-0',
+                            value: {{ config[0].value }},
+                            borderColor: 'black',
+                            borderWidth: 2,
+                            label: {
+                                content: '50%',
+                                enabled: true,
+                                position: 'right'
+                            }
+                        }]
+                    }*/
+                }
+            });
             function updateCounter() {
                 $.ajax({
                     type: 'GET',
@@ -19,25 +91,18 @@
                             return;
                         }
                         $('#counter-value').text(data.value);
-                        $('#counter-time').text(data.time);
+                        drawChart(data.time);
                         updateCounter();
                     }
                 });
             }
+            function drawChart(time) {
+                progressCircle.data.datasets[0].data = [time, {{ config[0].value }}-time];
+                //progressCircle.annotation.elements[0].options.value = time;
+                progressCircle.update();
+            }
             updateCounter();
         });
     </script>
-{% endblock %}
 
-{% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-6 text-center">
-                <h1 class="display-1" id="counter-value">{{ counter_value }}</h1>
-            </div>
-            <div class="col-6 text-center">
-                <h1 class="display-1" id="counter-time">{{ config[0].value }}</h1>
-            </div>
-        </div>
-    </div>
 {% endblock %}

@@ -17,7 +17,7 @@ class PlayerController extends AbstractController
     public function index(PlayerRepository $playerRepository): Response
     {
         return $this->render('player/index.html.twig', [
-            'players' => $playerRepository->findAll(),
+            'players' => $playerRepository->findRanking()
         ]);
     }
 
@@ -38,32 +38,6 @@ class PlayerController extends AbstractController
         }
 
         return $this->renderForm('player/new.html.twig', [
-            'player' => $player,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_player_show', methods: ['GET'])]
-    public function show(Player $player): Response
-    {
-        return $this->render('player/show.html.twig', [
-            'player' => $player,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_player_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Player $player, PlayerRepository $playerRepository): Response
-    {
-        $form = $this->createForm(PlayerType::class, $player);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $playerRepository->save($player, true);
-
-            return $this->redirectToRoute('app_player_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('player/edit.html.twig', [
             'player' => $player,
             'form' => $form,
         ]);

@@ -1,0 +1,120 @@
+.main {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background-image: url("../img/back.jpg");
+    background-size: cover;
+    background-position-x: left;
+    background-position-y: top;
+    background-repeat: no-repeat;
+}
+
+.game {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background-image: url("../img/game.jpg");
+    background-color: #e0e0e0;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.peusdo{
+    position: absolute;
+    top: 18%;
+    margin-left: 14%;
+    color: #00AEEF;
+}
+.rank{
+    position: absolute;
+    top: 16%;
+    margin-left: 68%;
+}
+
+.score{
+    position: absolute;
+    top: 50%;
+    margin-left: 20%;
+    color: #192441;
+    font-size: 100px;
+}
+
+.time{
+    position: absolute;
+    top: 60.5%;
+    margin-left: 42%;
+}
+
+.last{
+    position: absolute;
+    top: 50%;
+    margin-left: 68%;
+}
+
+.total{
+    position: absolute;
+    top: 76%;
+    margin-left: 18%;
+    color: white;
+}
+
+.textblack{
+    color : #000000;
+    text-decoration: none;
+    font-weight: bolder;
+}
+
+
+.textbleu{
+    color: #00AEEF;
+    text-decoration: none;
+    font-weight: bolder;
+}
+
+.textgray{
+    color: #7E7E7E;
+    text-decoration: none;
+    font-weight: bolder;
+}
+
+.textgrayless{
+    color: #7E7E7E;
+    text-decoration: none;
+}
+
+.bnt-bleu{
+    background-color: #00AEEF;
+}
+
+.bnt-bleu:hover{
+    background-color: #192441;
+}
+
+.bnt-bleu:focus{
+    background-color: #124065;
+}
+
+.bnt-bleu:active{
+    background-color: #124065;
+}
+
+
+.menu{
+    position: absolute;
+    top: 55%;
+    left: 50%; /* à 50%/50% du parent référent */
+    transform: translate(-50%, -50%);
+}
+
+.form{
+    font-size: large;
+    color: #7E7E7E;
+    font-weight: bolder;
+    position: absolute;
+    top: 30%;
+    left: 50%; /* à 50%/50% du parent référent */
+    transform: translate(-50%, -50%);
+}

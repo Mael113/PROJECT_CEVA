@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Player;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -75,4 +76,75 @@ class PlayerRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findLast()
+    {
+        return $this->createQueryBuilder('p')
+            ->where("p.starttime is not NULL")
+            ->orderBy("p.starttime","DESC")
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getResult();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function find5maxPlayer()
+    {
+        return $this->createQueryBuilder('p')
+            ->where("p.score is not NULL")
+            ->orderBy("p.score","DESC")
+            ->getQuery()
+            ->setMaxResults(5)
+            ->getResult();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function SumScore(DateTime $date, $config)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.starttime BETWEEN :startDate AND :endDate OR 1 =:conf')
+            ->setParameter('startDate', $date->format('Y-m-d 00:00:00'))
+            ->setParameter('endDate', $date->format('Y-m-d 23:59:59'))
+            ->setParameter('conf', $config)
+            ->select('SUM(p.score) as dayScore')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function FindRank($value, DateTime $date, $config)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.score >:val AND (p.starttime BETWEEN :startDate AND :endDate OR 1 =:conf)')
+            ->setParameter('startDate', $date->format('Y-m-d 00:00:00'))
+            ->setParameter('endDate', $date->format('Y-m-d 23:59:59'))
+            ->setParameter('conf', $config)
+            ->setParameter('val', $value)
+            ->select('COUNT(p)+1 as rank')
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findRanking()
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy("p.score","DESC")
+            ->getQuery()
+            ->getResult();
+    }
+
 }

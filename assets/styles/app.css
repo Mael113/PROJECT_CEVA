@@ -1,0 +1,12 @@
+@import "~bootstrap";
+@import "~bootstrap-table";
+@import "~bootstrap-icons";
+
+body {
+    background-color: white;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}

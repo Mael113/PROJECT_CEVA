@@ -1,22 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}CEVA CONNECT{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="main">
+        <h1 class="text-center display-3 mt-5">ceva hatchery CONNECT</h1>
 
-<div class="example-wrapper">
-    <h1>Poussin vaccin ✅</h1>
+        <div class="menu">
+            <div class="row">
+                <div class="col-6">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{  asset('build/game.jpg') }}" class="card-img-top" alt="...">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">GAME</h5>
+                            <p class="card-text">Start the game, the goal vaccinated as many chicks as possible in {{ config[0].value }}s.</p>
+                            <a href="{{ path("app_game") }}" class="btn bnt-bleu text-light">Lunch game</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{  asset('build/game.jpg') }}" class="card-img-top" alt="...">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">PLAYERS</h5>
+                            <p class="card-text">Add a player, the players added play in the order of addition.</p>
+                            <a href="{{ path("app_player_new") }}" class="btn bnt-bleu text-light">Add player</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-6">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{  asset('build/game.jpg') }}" class="card-img-top" alt="...">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">RANKING</h5>
+                            <p class="card-text">Visualization of the ranking of the players.</p>
+                            <a href="{{ path("app_player_index") }}" class="btn bnt-bleu text-light">Ranking</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{  asset('build/game.jpg') }}" class="card-img-top" alt="...">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">SETTING</h5>
+                            <p class="card-text">Modify the configuration and options of the game.</p>
+                            <a href="{{ path("app_config_index") }}" class="btn bnt-bleu text-light">Setting</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    This friendly message is coming from:
-    <ul>
-        {% if game_is_run %}<li>Your controller at <code><a href="{{ path('app_game') }}">Game</a></code></li>{% endif %}
-        <li>Your template at <code><a href="{{ path('app_player_new') }}">Player</a></code></li>
-        <li>Your template at <code><a href="{{ path('app_player_index') }}">bord</a></code></li>
-        <li>Your template at <code><a href="{{ path('app_config_index') }}">Config</a></code></li>
-    </ul>
-</div>
 {% endblock %}

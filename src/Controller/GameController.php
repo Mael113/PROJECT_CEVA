@@ -27,36 +27,57 @@ class GameController extends AbstractController
     #[Route('/start', name: 'app_game_start')]
     public function start(ManagerRegistry $doctrine): Response
     {
-        $player=$doctrine->getManager()->getRepository(Player::class)->findPlayer()[0];
-
-        //Sinon non player rendre en attente de joeur + stat et classement
-
         $config=$doctrine->getManager()->getRepository(Config::class)->findAll();
-        unlink("../dirExchange/score.txt");
 
+        $playerRankng=$doctrine->getManager()->getRepository(Player::class)->find5maxPlayer();
+
+        if (isset($doctrine->getManager()->getRepository(Player::class)->findLast()[0])){
+            $lastPlayer=$doctrine->getManager()->getRepository(Player::class)->findLast()[0];
+            $lastRank=$doctrine->getManager()->getRepository(Player::class)->FindRank($lastPlayer->getScore(),(new \DateTime()),$config[2]->getValue())[0]["rank"];
+        }
+        else{
+            $lastPlayer= new Player();
+            $lastRank=0;
+        }
+
+        $dayScore=$doctrine->getManager()->getRepository(Player::class)->SumScore((new \DateTime()),$config[2]->getValue())[0]["dayScore"];
+
+        if (isset($doctrine->getManager()->getRepository(Player::class)->findPlayer()[0])){
+            $player=$doctrine->getManager()->getRepository(Player::class)->findPlayer()[0];
+        }
+        else{
+            return $this->render('game/wait.html.twig', [
+                'config' => $config,
+                'playerRankng' => $playerRankng,
+                'lastPlayer' => $lastPlayer,
+                'lastRank' => $lastRank,
+                'dayScore' => $dayScore,
+                'counter_value' => "0"
+            ]);
+        }
+
+
+        unlink("../dirExchange/score.txt");
 
         return $this->render('game/index.html.twig', [
             'player' => $player,
             'config' => $config,
+            'playerRankng' => $playerRankng,
+            'lastPlayer' => $lastPlayer,
+            'lastRank' => $lastRank,
+            'dayScore' => $dayScore,
             'counter_value' => "0"
         ]);
-
-
     }
 
-    #[Route('/{id}/firtupdate', name: 'app_game_firstupdate')]
-    public function firstupdate(ManagerRegistry $doctrine, Player $player)
+    #[Route('/wait', name: 'app_game_wait')]
+    public function wait(ManagerRegistry $doctrine)
     {
-        while (!file_exists("../dirExchange/score.txt")){
+        while (!isset($doctrine->getManager()->getRepository(Player::class)->findPlayer()[0])){
             usleep(10000);
         }
-        $player->setStarttime((new \DateTime()));
-        $entityManager = $doctrine->getManager();
-        $entityManager->persist($player);
-        $entityManager->flush();
         return new JsonResponse([
-            'value' => 1,
-            'stopped' => false
+            'stopped' => true,
         ]);
     }
 
@@ -78,6 +99,9 @@ class GameController extends AbstractController
         }
 
         if (time() - $player->getStarttime()->getTimestamp() <= $_GET["duration"]) {
+            if (!ctype_digit($value)) {
+                $value=0;
+            }
             return new JsonResponse([
                 'value' => $value,
                 'stopped' => false,
@@ -85,7 +109,13 @@ class GameController extends AbstractController
             ]);
         }
         else {
-            $player->setScore($value);
+            if (!ctype_digit($value)) {
+                $player->setScore(0);
+                $value=0;
+            }
+            else{
+                $player->setScore($value);
+            }
             $entityManager = $doctrine->getManager();
             $entityManager->persist($player);
             $entityManager->flush();

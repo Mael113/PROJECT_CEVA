@@ -3,35 +3,63 @@
 {% block title %}Config index{% endblock %}
 
 {% block body %}
-    <h1>Config index</h1>
+    <div class="main">
+        <div class="container-fluid">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Value</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for config in configs %}
-            <tr>
-                <td>{{ config.id }}</td>
-                <td>{{ config.name }}</td>
-                <td>{{ config.value }}</td>
-                <td>
-                    <a href="{{ path('app_config_show', {'id': config.id}) }}">show</a>
-                    <a href="{{ path('app_config_edit', {'id': config.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <h1 class="mt-5">Config index</h1>>
 
-    <a href="{{ path('app_config_new') }}">Create new</a>
+            <table
+                    data-toggle="table"
+                    id="table"
+                    data-toolbar="#toolbar"
+                    data-locale="fr-FR"
+                    data-search="true"
+                    data-advanced-search="true"
+                    data-id-table="advancedTable"
+                    data-show-toggle="true"
+                    data-show-fullscreen="true"
+                    data-show-columns="true"
+                    data-show-columns-toggle-all="true"
+                    data-show-export="true"
+                    data-show-multi-sort="true"
+                    data-sort-class="bandwidth_mb"
+                    data-minimum-count-columns="2"
+                    data-show-pagination-switch="true"
+                    data-pagination="true"
+                    data-page-list="[10, 25, 50, 100, all]"
+                    data-show-footer="true"
+                    data-response-handler="responseHandler"
+                    class="text-center"
+            >
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Value</th>
+                    <th>Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for config in configs %}
+                    <tr>
+                        <td>{{ config.id }}</td>
+                        <td>{{ config.name }}</td>
+                        <td>{{ config.value }}</td>
+                        <td>
+                            <a href="{{ path('app_config_edit', {'id': config.id}) }}"><i class="fas fa-pencil-alt"></i></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="text-center mt-5">
+               <button type="button" class="btn bnt-bleu"><a href="{{ path('app_main') }}" class="text-decoration-none text-light">Back to menu</a></button>
+            </div>
+        </div>
+    </div>
 {% endblock %}

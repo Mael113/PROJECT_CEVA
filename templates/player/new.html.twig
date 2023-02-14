@@ -3,9 +3,30 @@
 {% block title %}New Player{% endblock %}
 
 {% block body %}
-    <h1>Create new Player</h1>
+    <div class="main">
+        <h1 class="text-center mt-5">Create new Player</h1>
 
-    {{ include('player/_form.html.twig') }}
-
-    <a href="{{ path('app_player_index') }}">back to list</a>
+        <div class="form text-center">
+            {{ form_start(form) }}
+                <div class="mb-3">
+                    <div class="form-label">{{ form_label(form.name, 'Name ', {'label_attr': {'class': 'foo'}}) }}</div>
+                    {{ form_errors(form.name) }}
+                    <div class="form-control">{{ form_widget(form.name) }}</div>
+                    {{ form_help(form.name) }}
+                </div>
+                <div class="mb-3">
+                    <div class="form-label">{{ form_label(form.surname, 'Surname ', {'label_attr': {'class': 'foo'}}) }}</div>
+                    {{ form_errors(form.surname) }}
+                    <div class="form-control">{{ form_widget(form.surname) }}</div>
+                    {{ form_help(form.surname) }}
+                </div>
+            <div class="text-center mt-2">
+                <button class="btn bnt-bleu text-light">{{ button_label|default('Save') }}</button>
+            </div>
+            {{ form_end(form) }}
+            <div class="text-center mt-2">
+                <button type="button" class="btn bnt-bleu"><a href="{{ path('app_main') }}" class="text-decoration-none text-light">Back to menu</a></button>
+            </div>
+        </div>
+    </div>
 {% endblock %}

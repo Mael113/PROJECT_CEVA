@@ -1,6 +1,35 @@
 {
   "dependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "@hotwired/stimulus": "^3.2.1",
+    "@popperjs/core": "^2.11.6",
+    "@symfony/stimulus-bridge": "^3.2.1",
     "bootstrap": "^5.3.0-alpha1",
-    "jquery": "^3.6.3"
+    "bootstrap-icons": "^1.10.3",
+    "bootstrap-table": "^1.21.2",
+    "chart.js": "^4.2.0",
+    "chartjs-plugin-annotation": "^2.1.2",
+    "core-js": "^3.27.2",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.6.3",
+    "jquery-countdown": "^2.2.0",
+    "kinetic": "^5.2.0",
+    "util": "^0.12.5"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@fortawesome/fontawesome-free": "^6.3.0",
+    "@symfony/webpack-encore": "^4.2.0",
+    "file-loader": "6.0.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-notifier": "1.15.0"
+  },
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
   }
 }
