@@ -19,7 +19,6 @@ class GameController extends AbstractController
     #[Route('/', name: 'app_game')]
     public function game()
     {
-        //lunch core.py
         fopen("../dirExchange/score.txt","w+");
         return $this->redirectToRoute("app_game_start");
     }
@@ -56,8 +55,8 @@ class GameController extends AbstractController
             ]);
         }
 
-
         unlink("../dirExchange/score.txt");
+        shell_exec(".././core.sh");
 
         return $this->render('game/index.html.twig', [
             'player' => $player,
@@ -131,6 +130,7 @@ class GameController extends AbstractController
     #[Route('/{id}/stop', name: 'app_game_stop')]
     public function stop(ManagerRegistry $doctrine,Player $player): Response
     {
+        shell_exec("pkill -f core.sh");
         sleep(5);
         return $this->redirectToRoute("app_game_start");
     }

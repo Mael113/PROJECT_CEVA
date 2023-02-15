@@ -11,7 +11,7 @@ def increment_counter(channel):
     state = GPIO.input(40)
     if state == False:
         counter += 1
-        with open('/dirExchange/score.text', 'w') as f:
+        with open('/dirExchange/score.text', 'w+') as f:
             f.write(str(counter))
 
 GPIO.add_event_detect(40, GPIO.BOTH, callback=increment_counter, bouncetime=200)
