@@ -11,10 +11,6 @@ snake = 3
 lenght = 450 * 4
 tabpos = array('L', [])
 
-
-# pixels = neopixel.NeoPixel(board.D18, lenght+snake, pixel_order=neopixel.RGBW, auto_write=False)
-# pixels.fill((0,0,0,0))
-
 async def main():
     # Run this code in your async function
     node = ArtNetNode('192.168.100.250', 6454)
@@ -49,7 +45,7 @@ def snakeup(universe, pos):
     while i < snake and (pos - i) >= 0:
         # print("A"+str(((pos-i)*4+1)%512))
         channel = universe[((pos - i) * 4 + 1) // 512].get_channel("" + str(((pos - i) * 4 + 1) % 512) + "/4")
-        channel.set_values([0, 0, 0,  255 * (1 - math.log(i) / math.log(snake))])
+        channel.set_values([0, 0, 0,  255 * (1 - math.log(i+1) / math.log(snake))])
         i += 1
     if (pos - snake) >= 0:
         # print("E"+str(((pos-snake)*4+1)%512))
