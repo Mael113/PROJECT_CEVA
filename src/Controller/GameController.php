@@ -26,8 +26,8 @@ class GameController extends AbstractController
         $entityManager->persist( $config[3]);
         $entityManager->flush();
 
-        //shell_exec("sudo service core stop");
-        //shell_exec("sudo service snake stop");
+        shell_exec("sudo service core stop");
+        shell_exec("sudo service snake stop");
         return $this->redirectToRoute("app_game_start");
     }
 
@@ -66,11 +66,11 @@ class GameController extends AbstractController
         if(file_exists("../dirExchange/score.txt")){
             unlink("../dirExchange/score.txt");
         }
-       // shell_exec("sudo .././core.sh");
+        shell_exec("sudo .././core.sh");
 
-        /*while (shell_exec("sudo systemctl is-active core")!="active" && shell_exec("sudo systemctl is-active snake")!="active"){
+        while (shell_exec("sudo systemctl is-active core")!="active" && shell_exec("sudo systemctl is-active snake")!="active"){
             usleep($config[1]->getValue()*5);
-        }*/
+        }
 
         return $this->render('game/index.html.twig', [
             'player' => $player,
