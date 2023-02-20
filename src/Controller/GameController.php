@@ -7,6 +7,7 @@ use App\Entity\Player;
 use App\Repository\PlayerRepository;
 use Doctrine\Bundle\DoctrineBundle\ManagerConfigurator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,9 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class GameController extends AbstractController
 {
     #[Route('/', name: 'app_game')]
-    public function game()
+    public function game(ManagerRegistry $doctrine)
     {
-        fopen("../dirExchange/score.txt","w+");
+        $config=$doctrine->getManager()->getRepository(Config::class)->findAll();
+        $config[3]->setValue(1);
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist( $config[3]);
+        $entityManager->flush();
+
+        //shell_exec("sudo service core stop");
+        //shell_exec("sudo service snake stop");
         return $this->redirectToRoute("app_game_start");
     }
 
@@ -55,8 +63,14 @@ class GameController extends AbstractController
             ]);
         }
 
-        unlink("../dirExchange/score.txt");
-        shell_exec(".././core.sh");
+        if(file_exists("../dirExchange/score.txt")){
+            unlink("../dirExchange/score.txt");
+        }
+       // shell_exec("sudo .././core.sh");
+
+        /*while (shell_exec("sudo systemctl is-active core")!="active" && shell_exec("sudo systemctl is-active snake")!="active"){
+            usleep($config[1]->getValue()*5);
+        }*/
 
         return $this->render('game/index.html.twig', [
             'player' => $player,
@@ -72,8 +86,10 @@ class GameController extends AbstractController
     #[Route('/wait', name: 'app_game_wait')]
     public function wait(ManagerRegistry $doctrine)
     {
+        $config=$doctrine->getManager()->getRepository(Config::class)->findAll();
+
         while (!isset($doctrine->getManager()->getRepository(Player::class)->findPlayer()[0])){
-            usleep(10000);
+            usleep($config[1]->getValue()*10);
         }
         return new JsonResponse([
             'stopped' => true,
@@ -84,9 +100,10 @@ class GameController extends AbstractController
     #[Route('/{id}/update', name: 'app_game_update')]
     public function update(ManagerRegistry $doctrine, Player $player)
     {
+        $config=$doctrine->getManager()->getRepository(Config::class)->findAll();
 
         while (!file_exists("../dirExchange/score.txt")){
-            sleep(1);
+            usleep($config[1]->getValue()*10);
         }
         $value = file_get_contents('../dirExchange/score.txt');
 
@@ -101,6 +118,7 @@ class GameController extends AbstractController
             if (!ctype_digit($value)) {
                 $value=0;
             }
+
             return new JsonResponse([
                 'value' => $value,
                 'stopped' => false,
@@ -124,21 +142,34 @@ class GameController extends AbstractController
                 'time' => 0
             ]);
         }
-
     }
 
     #[Route('/{id}/stop', name: 'app_game_stop')]
     public function stop(ManagerRegistry $doctrine,Player $player): Response
     {
-        shell_exec("pkill -f core.sh");
-        sleep(5);
+        $config=$doctrine->getManager()->getRepository(Config::class)->findAll();
+
+        shell_exec("sudo service core stop");
+        if(file_exists("../dirExchange/score.txt")){
+            unlink("../dirExchange/score.txt");
+        }
+        usleep($config[1]->getValue()*500);
         return $this->redirectToRoute("app_game_start");
     }
 
     #[Route('/endgame', name: 'app_game_endgame')]
-    public function endgame(): Response
+    public function endgame(ManagerRegistry $doctrine): Response
     {
-        //end core.py
+        $config=$doctrine->getManager()->getRepository(Config::class)->findAll();
+        $config[3]->setValue(0);
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist( $config[3]);
+        $entityManager->flush();
+        shell_exec("sudo service core stop");
+        shell_exec("sudo service snack stop");
+        if(file_exists("../dirExchange/score.txt")){
+            unlink("../dirExchange/score.txt");
+        }
         return $this->redirectToRoute("app_main");
     }
 }

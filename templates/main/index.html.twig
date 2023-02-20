@@ -14,7 +14,7 @@
                         <div class="card-body text-center">
                             <h5 class="card-title">GAME</h5>
                             <p class="card-text">Start the game, the goal vaccinated as many chicks as possible in {{ config[0].value }}s.</p>
-                            <a href="{{ path("app_game") }}" class="btn bnt-bleu text-light">Lunch game</a>
+                            <a href="{{ path("app_game") }}" class="btn bnt-bleu text-light {% if config[3].value%}disabled{% endif %}">Lunch game</a>
                         </div>
                     </div>
                 </div>

@@ -40,7 +40,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for config in configs %}
+                {% for config in configs if %}
                     <tr>
                         <td>{{ config.id }}</td>
                         <td>{{ config.name }}</td>
@@ -62,4 +62,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(function() {
+            $('#table').bootstrapTable()
+        })
+    </script>
 {% endblock %}
