@@ -11,7 +11,7 @@
                     data-toggle="table"
                     id="table"
                     data-toolbar="#toolbar"
-                    data-locale="fr-FR"
+                    data-locale="en-US"
                     data-search="true"
                     data-advanced-search="true"
                     data-id-table="advancedTable"
@@ -19,7 +19,6 @@
                     data-show-fullscreen="true"
                     data-show-columns="true"
                     data-show-columns-toggle-all="true"
-                    data-show-export="true"
                     data-show-multi-sort="true"
                     data-sort-class="bandwidth_mb"
                     data-minimum-count-columns="2"
@@ -69,14 +68,10 @@
                 <button type="button" class="btn bnt-bleu"><a href="{{ path('app_main') }}" class="text-decoration-none text-light">Back to menu</a></button>
             </div>
 
-
-            <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-            <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/bootstrap-table-locale-all.min.js"></script>
-            <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
-            <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
-            <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/toolbar/bootstrap-table-toolbar.min.js"></script>
-            <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/multiple-sort/bootstrap-table-multiple-sort.js"></script>
-
+            <script src=" {{ asset('js/table-local.js') }}"></script>
+            <script src=" {{ asset('js/bootstrap-table.js') }}"></script>
+            <script src=" {{ asset('js/toolbar-table.js') }}"></script>
+            <script src=" {{ asset('js/multiple.js') }}"></script>
         </div>
     </div>
 

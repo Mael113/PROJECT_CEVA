@@ -61,7 +61,7 @@ Encore
         from: './assets/img',
     })
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

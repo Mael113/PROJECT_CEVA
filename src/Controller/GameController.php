@@ -68,9 +68,11 @@ class GameController extends AbstractController
         }
         shell_exec("sudo .././core.sh");
 
-        while (shell_exec("sudo systemctl is-active core")!="active" && shell_exec("sudo systemctl is-active snake")!="active"){
+
+        while (exec("sudo systemctl is-active core")!="active" && exec("sudo systemctl is-active snake")!="active"){
             usleep($config[1]->getValue()*5);
         }
+
 
         return $this->render('game/index.html.twig', [
             'player' => $player,
@@ -87,6 +89,8 @@ class GameController extends AbstractController
     public function wait(ManagerRegistry $doctrine)
     {
         $config=$doctrine->getManager()->getRepository(Config::class)->findAll();
+        ini_set("memory_limit", "-1");
+        set_time_limit(0);
 
         while (!isset($doctrine->getManager()->getRepository(Player::class)->findPlayer()[0])){
             usleep($config[1]->getValue()*10);
@@ -101,6 +105,8 @@ class GameController extends AbstractController
     public function update(ManagerRegistry $doctrine, Player $player)
     {
         $config=$doctrine->getManager()->getRepository(Config::class)->findAll();
+        ini_set("memory_limit", "-1");
+        set_time_limit(0);
 
         while (!file_exists("../dirExchange/score.txt")){
             usleep($config[1]->getValue()*10);

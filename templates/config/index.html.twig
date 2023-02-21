@@ -6,13 +6,18 @@
     <div class="main">
         <div class="container-fluid">
 
-            <h1 class="mt-5">Config index</h1>>
+            <h1 class="mt-5">Config index</h1>
+
+            <script src=" {{ asset('js/table-local.js') }}"></script>
+            <script src=" {{ asset('js/bootstrap-table.js') }}"></script>
+            <script src=" {{ asset('js/toolbar-table.js') }}"></script>
+            <script src=" {{ asset('js/multiple.js') }}"></script>
 
             <table
                     data-toggle="table"
                     id="table"
                     data-toolbar="#toolbar"
-                    data-locale="fr-FR"
+                    data-locale="en-US"
                     data-search="true"
                     data-advanced-search="true"
                     data-id-table="advancedTable"
@@ -20,7 +25,6 @@
                     data-show-fullscreen="true"
                     data-show-columns="true"
                     data-show-columns-toggle-all="true"
-                    data-show-export="true"
                     data-show-multi-sort="true"
                     data-sort-class="bandwidth_mb"
                     data-minimum-count-columns="2"
@@ -40,7 +44,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for config in configs if %}
+                {% for config in configs %}
                     <tr>
                         <td>{{ config.id }}</td>
                         <td>{{ config.name }}</td>

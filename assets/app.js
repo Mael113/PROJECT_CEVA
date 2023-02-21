@@ -9,8 +9,11 @@
 import './styles/app.css';
 import  './styles/style.css';
 
-
-
+import './js/chart_aip';
+import './js/bootstrap-table';
+import './js/multiple-sort';
+import './js/table-locale';
+import './js/toolbar';
 // start the Stimulus application
 //import './bootstrap';
 
